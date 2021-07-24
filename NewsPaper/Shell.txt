@@ -1,0 +1,77 @@
+1#Создание пользователей
+user1 = User.objects.create_user(username='Alex')
+user2 = User.objects.create_user(username='Andrei')
+
+2#Присваивание пользователям автора
+Author.objects.create(authorUser=user1)
+Author.objects.create(authorUser=user2)
+
+3#Создание категорий для постов
+Category.objects.create(name='Computers')   #id=1
+Category.objects.create(name='Cars')        #id=2
+Category.objects.create(name='House')       #id=3
+Category.objects.create(name='Sport')       #id=4
+
+#Создание переменных
+author1 = Author.objects.get(id=1)
+author2 = Author.objects.get(id=2)
+
+4#Создание автором поста
+Post.objects.create(author=author1, categorySelection='AR', title='BMW', text='...')        #id=1
+Post.objects.create(author=author1, categorySelection='NS', title='Toyota', text='...')     #id=2
+Post.objects.create(author=author1, categorySelection='AR', title='Scales', text='...')     #id=3
+
+#Создание переменных для постов
+post1 = Post.objects.get(id=1)
+post2 = Post.objects.get(id=2)
+post3 = Post.objects.get(id=3)
+
+5#Присваивание постам категорий
+Category.objects.all().values('nameCategory','id')   # для сверки id категории
+post1.postCategory.add(Category.objects.get(id=2))
+post1.postCategory.add(Category.objects.get(id=1))
+post2.postCategory.add(Category.objects.get(id=1))
+post2.postCategory.add(Category.objects.get(id=2))
+post3.postCategory.add(Category.objects.get(id=3))
+post3.postCategory.add(Category.objects.get(id=4))
+
+6#Создаем комментарии к постам:
+Comment.objects.create(commentPost=Post.objects.get(id=1), commentUser=Author.objects.get(id=1).authorUser, textComment='Good car')
+Comment.objects.create(commentPost=Post.objects.get(id=1), commentUser=Author.objects.get(id=2).authorUser, textComment='Car - Dream')
+Comment.objects.create(commentPost=Post.objects.get(id=2), commentUser=Author.objects.get(id=2).authorUser, textComment='Not bad car')
+Comment.objects.create(commentPost=Post.objects.get(id=3), commentUser=Author.objects.get(id=1).authorUser, textComment='Good scales')
+ Comment.objects.create(commentPost=Post.objects.get(id=3), commentUser=Author.objects.get(id=2).authorUser, textComment='Bad scales')
+7#Корректируем рейтинг статей и комментариев
+Comment.objects.get(id=1).dislike()
+Post.objects.get(id=1).like()
+Comment.objects.get(id=4).dislike()
+Comment.objects.get(id=4).dislike()
+Post.objects.get(id=3).like()
+
+8#Обновляем рейтинги пользователей
+author1.update_rating()
+author1.rateAuthor      #Проверка
+author2.update_rating()
+author2.rateAuthor      #Проверка
+
+9#Вывод лучшего пользователя 46.53
+a = Author.objects.order_by('-rateAuthor')[:1]
+for i in a:
+    print(i.rateAuthor)
+    print(i.authorUser.username)
+
+10#Вывод даты добавления,юзернейма автора,рейтинга,заголовок и превью лучшей статьи
+b = Post.objects.order_by('-rating')[0]
+for i in b:
+    print(i.dateCreation)
+    print(i.author.authorUser.username)
+    print(i.rating)
+    print(i.title)
+    print(i.preview())
+
+11#Вывести все комменты(дата, пользователь, рейтинг, текст)
+b.comment_set.values('timeComment', 'commentUser', 'rating','textComment')
+
+
+
+
