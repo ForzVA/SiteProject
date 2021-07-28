@@ -26,12 +26,16 @@ class Author(models.Model):
         self.save()
 
 
-
+    def __str__(self):
+        return f'{self.authorUser}'
 
 
 class Category(models.Model):
     nameCategory = models.CharField(unique=True,
                                     max_length=64)
+
+    def __str__(self):
+        return f'{self.nameCategory,title()}'
 
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
@@ -56,6 +60,9 @@ class Post(models.Model):
     def preview(self):
         return self.text[0:128] + '...'
 
+    def __str__(self):
+        return f'{self.title}:{self.text[:20]}'
+
 
 class PostCategory(models.Model):
     postWay = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -74,3 +81,6 @@ class Comment(models.Model):
     def dislike(self):
         self.rating -= 1
         self.save()
+
+    def __str__(self):
+        return f'{self.commentPost}'
