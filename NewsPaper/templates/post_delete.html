@@ -15,7 +15,8 @@ Posts
 
 <form method="POST">
     {% csrf_token %}
-    <input type="submit" value="Confirm">
+    <input type="checkbox" required>
+    <input type="submit" value="Delete">
 </form>
 
 {% endblock content %}

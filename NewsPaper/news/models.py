@@ -47,7 +47,7 @@ class Post(models.Model):
     dateCreation = models.DateTimeField(auto_now_add=True)
     postCategory = models.ManyToManyField(Category, through='PostCategory')
     title = models.CharField(unique=True,
-                             max_length=64)
+                             max_length=128)
     text = models.TextField(verbose_name='News text')
     rating = models.IntegerField(default=0)
 
