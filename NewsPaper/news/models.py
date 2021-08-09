@@ -9,6 +9,7 @@ CAT_CHOIСES = [
     (ARTICLE, 'Статья')
     ]
 
+
 class Author(models.Model):
     authorUser = models.OneToOneField(User, on_delete=models.CASCADE)
     rateAuthor = models.IntegerField(default=0)
@@ -35,10 +36,11 @@ class Category(models.Model):
                                     max_length=64)
 
     def __str__(self):
-        return f'{self.nameCategory,title()}'
+        return f'{self.nameCategory}'
+
 
 class Post(models.Model):
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE,)
     categorySelection = models.CharField(choices=CAT_CHOIСES,
                                          default='NS',
                                          max_length=2)
@@ -46,7 +48,7 @@ class Post(models.Model):
     postCategory = models.ManyToManyField(Category, through='PostCategory')
     title = models.CharField(unique=True,
                              max_length=64)
-    text = models.TextField()
+    text = models.TextField(verbose_name='News text')
     rating = models.IntegerField(default=0)
 
     def like(self):
@@ -63,10 +65,14 @@ class Post(models.Model):
     def __str__(self):
         return f'{self.title}:{self.text[:20]}'
 
+    def get_absolute_url(self):
+        return f'/posts/{self.id}'
+
 
 class PostCategory(models.Model):
     postWay = models.ForeignKey(Post, on_delete=models.CASCADE)
     categoryWay = models.ForeignKey(Category, on_delete=models.CASCADE)
+
 
 class Comment(models.Model):
     commentPost = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -74,6 +80,7 @@ class Comment(models.Model):
     textComment = models.TextField(default='Nothing')
     timeComment = models.DateTimeField(auto_now_add=True)
     rating = models.IntegerField(default=0)
+
     def like(self):
         self.rating += 1
         self.save()

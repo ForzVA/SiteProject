@@ -21,5 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('pages/', include('django.contrib.flatpages.urls')),
     path('', lambda request: redirect('home/', permanent=False)),
-    path('news/', include('news.urls')),
+    path('posts/', include('news.urls')),
 ]

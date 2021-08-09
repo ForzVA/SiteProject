@@ -1,10 +1,9 @@
 {% extends 'flatpages/default.html' %}
-
-    {% load my_filters %}
+{% load my_filters %}
 
 
 {% block title %}
-    Posts
+    Search
 {% endblock title %}
 
 
@@ -12,28 +11,23 @@
 
     {{time_now}}
 
+    <h1>Search:</h1>
 
-    <h1>All news and articles:</h1>
-    <h3>[{{all_posts|length}}]</h3>
-    <strong><span style="font color: #ff00ff;">
-        <a href="search">--Post search--</a> &nbsp;&nbsp;&nbsp;
-        <a href="{% url 'post_create' %}">---ADD POST---</a>
-    </span></strong>
+<form method="GET">
+    {{ filter.form }}
+    <input type="submit" value="Найти">
+</form>
+
 
     <hr>
 
     {% for post in posts  %}
-
         <p style="text-align: left;">
-            <strong><a href="{% url 'post_detail' post.id %}">{{post.title}}</a>
-                    <a href="{% url 'post_update' post.id %}"><u>[Edit]</u></a>
-                    <a href="{% url 'post_delete' post.id %}"><u>[Delete]</u></a>
-
-
-                &nbsp;&nbsp;&nbsp; <br>
+            <strong>
+        {{post.title|censor}} &nbsp;&nbsp;&nbsp; <br>
         {{post.author}} &nbsp;&nbsp;&nbsp;
         {{post.dateCreation|date:'d-m-y'}} &nbsp;
-         IDPost:{{post.id}} </strong> <br>
+         ID поста:{{post.id}} </strong> <br>
         {{post.text|truncatechars:50|censor}} </p>
     {% endfor %}
 
@@ -60,8 +54,9 @@
     <a href="?page={{ page_obj.paginator.num_pages}}">LAST</a>
 {% endif%}
 
+
     {%else%}
-        <h2>----------</h2>
+        <h2>All posts found </h2>
     {%endif%}
 
 {% endblock content %}
