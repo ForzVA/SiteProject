@@ -21,8 +21,7 @@
 
     {% for post in posts  %}
         <p style="text-align: left;">
-            <strong>
-        {{post.title|censor}} &nbsp;&nbsp;&nbsp; <br>
+        <strong><a href="{% url 'post_detail' post.id %}">{{post.title}}</a> &nbsp;&nbsp;&nbsp; <br>
         {{post.author}} &nbsp;&nbsp;&nbsp;
         {{post.dateCreation|date:'d-m-y'}} &nbsp;
          ID поста:{{post.id}} </strong> <br>

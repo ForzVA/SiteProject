@@ -1,13 +1,15 @@
-from django.views.generic import ListView, DetailView,CreateView, UpdateView, DeleteView
-from . import filters
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
+from django.shortcuts import redirect
 from .models import Post
 from datetime import *
 from .filters import NewsFilter
 from .forms import PostForm
+from django.views.generic.edit import CreateView
 
-
-
-class NewsList(ListView):
+class NewsList(LoginRequiredMixin, ListView):
     model = Post
     template_name = 'posts.html'
     context_object_name = 'posts'
@@ -16,7 +18,7 @@ class NewsList(ListView):
     form_class = PostForm
 
     def get_filter(self):
-        return NewsFilter(self.request.GET, queryset = super().get_queryset())
+        return NewsFilter(self.request.GET, queryset=super().get_queryset())
 
     def get_queryset(self):
         return self.get_filter().qs
@@ -38,6 +40,11 @@ class NewsList(ListView):
 
         return super().get(request, *args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_authors'] = not self.request.user.groups.filter(name='authors').exists()
+        return context
+
 
 class NewsDetail(DetailView):
     model = Post
@@ -45,7 +52,7 @@ class NewsDetail(DetailView):
     context_object_name = 'post'
 
 
-class SearchNews(ListView):
+class SearchNews(LoginRequiredMixin, ListView):
     model = Post
     template_name = 'search.html'
     context_object_name = 'posts'
@@ -66,12 +73,14 @@ class SearchNews(ListView):
         return context
 
 
-class PostCreate(CreateView):
+class PostCreate(PermissionRequiredMixin, CreateView):
+    permission_required = 'news.add_post'
     template_name = 'post_create.html'
     form_class = PostForm
 
 
-class PostUpdate(UpdateView):
+class PostUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = 'news.change_post'
     template_name = 'post_create.html'
     form_class = PostForm
 
@@ -86,3 +95,10 @@ class PostDelete(DeleteView):
     success_url = '/posts/'
 
 
+@login_required
+def upgrade_me(request):
+    user = request.user
+    authors_group = Group.objects.get(name='authors')
+    if not request.user.groups.filter(name='authors').exists():
+        authors_group.user_set.add(user)
+    return redirect('/')
