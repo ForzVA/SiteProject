@@ -1,13 +1,16 @@
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render, reverse
 from .models import Post
 from datetime import *
 from .filters import NewsFilter
 from .forms import PostForm
 from django.views.generic.edit import CreateView
+from django.views import View
+from django.http import HttpResponse
+from .tasks import hello
 
 class NewsList(LoginRequiredMixin, ListView):
     model = Post
@@ -35,8 +38,6 @@ class NewsList(LoginRequiredMixin, ListView):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)  # создаём новую форму, забиваем в неё данные из POST-запроса
 
-        if form.is_valid():  # если пользователь ввёл всё правильно и нигде не ошибся, то сохраняем новый товар
-            form.save()
 
         return super().get(request, *args, **kwargs)
 
@@ -95,6 +96,11 @@ class PostDelete(DeleteView):
     success_url = '/posts/'
 
 
+class IndexView(View):
+    def get(self, request):
+        hello.delay()
+        return HttpResponse('hello')
+
 @login_required
 def upgrade_me(request):
     user = request.user
@@ -102,3 +108,7 @@ def upgrade_me(request):
     if not request.user.groups.filter(name='authors').exists():
         authors_group.user_set.add(user)
     return redirect('/')
+
+
+
+

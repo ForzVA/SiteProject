@@ -10,7 +10,8 @@ class NewsFilter(django_filters.FilterSet):
     class Meta:
         model = Post
         fields = {'author': ['exact'],
-                  'title': ['icontains'],}
+                  'title': ['icontains'],
+                  'categorySelection': ['exact']}
 
 
 

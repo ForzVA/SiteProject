@@ -8,10 +8,11 @@ Posts
 
 {% block content %}
     {%if post%}
-        <h3> <p style="text-align: left;"><strong>{{post.title|censor}} &nbsp;&nbsp;&nbsp; <br>
-        {{post.author}} &nbsp;&nbsp;&nbsp;
+        <h3><p style="text-align: left;"><strong>{{post.title|censor}} &nbsp;&nbsp;&nbsp; <br>
+        [{{post.author}}&nbsp;&nbsp;&nbsp;
         {{post.dateCreation|date:'d-m-y'}}&nbsp;
-        {{post.dateCreation|time}}</strong> <br> <br>
+        {{post.dateCreation|time}}
+        ]</strong> <br> <br> <hr>
         {{post.text|censor}} </p></h3>
     {%else%}
          <h1> Такого поста нет </h1>

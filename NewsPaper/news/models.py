@@ -1,12 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
+from datetime import datetime
 
 NEWS = 'NS'
 ARTICLE = 'AR'
 CAT_CHOIСES = [
-    (NEWS, 'Новость'),
-    (ARTICLE, 'Статья')
+    (NEWS, 'News'),
+    (ARTICLE, 'Article')
     ]
 
 
@@ -26,7 +27,6 @@ class Author(models.Model):
         self.rateAuthor = pRating * 3 + cRating
         self.save()
 
-
     def __str__(self):
         return f'{self.authorUser}'
 
@@ -34,6 +34,8 @@ class Author(models.Model):
 class Category(models.Model):
     nameCategory = models.CharField(unique=True,
                                     max_length=64)
+
+    subscribers = models.ManyToManyField(User)
 
     def __str__(self):
         return f'{self.nameCategory}'
@@ -43,7 +45,8 @@ class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE,)
     categorySelection = models.CharField(choices=CAT_CHOIСES,
                                          default='NS',
-                                         max_length=2)
+                                         max_length=2,
+                                         verbose_name='Category')
     dateCreation = models.DateTimeField(auto_now_add=True)
     postCategory = models.ManyToManyField(Category, through='PostCategory')
     title = models.CharField(unique=True,
@@ -91,3 +94,12 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.commentPost}'
+
+
+
+
+
+
+
+
+

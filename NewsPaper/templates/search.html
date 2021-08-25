@@ -24,7 +24,8 @@
         <strong><a href="{% url 'post_detail' post.id %}">{{post.title}}</a> &nbsp;&nbsp;&nbsp; <br>
         {{post.author}} &nbsp;&nbsp;&nbsp;
         {{post.dateCreation|date:'d-m-y'}} &nbsp;
-         ID поста:{{post.id}} </strong> <br>
+         IDPost:{{post.id}} &nbsp;&nbsp;&nbsp;
+         Category:{{post.categorySelection}} </strong> <br>
         {{post.text|truncatechars:50|censor}} </p>
     {% endfor %}
 

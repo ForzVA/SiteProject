@@ -9,7 +9,7 @@ class PostForm(ModelForm):
 
     class Meta:
         model = Post
-        fields = ['title', 'author', 'text', 'check_box']
+        fields = ['title', 'author', 'categorySelection', 'text', 'check_box']
 
 
 class CommonSignupForm(SignupForm):

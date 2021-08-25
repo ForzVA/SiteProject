@@ -14,14 +14,14 @@
 
 
     <h1>All news and articles:</h1>
+    <button> <a href="accounts/logout/">LogOut</a> </button>
+    {% if is_not_authors %}
+        <button> <a href="upgrade/"> Become an author </a> </button>
+    {% endif %}
     <h3>[{{all_posts|length}}]</h3>
     <strong><span style="font color: #ff00ff;">
         <a href="search">--Post search--</a> &nbsp;&nbsp;&nbsp;
         <a href="{% url 'post_create' %}">---ADD POST---</a> &nbsp;&nbsp;&nbsp;
-        <button> <a href="accounts/logout/">LogOut</a> </button>
-        {% if is_not_authors %}
-        <button> <a href="upgrade/"> Become an author </a> </button>
-        {% endif %}
     </span></strong>
 
     <hr>
@@ -37,7 +37,8 @@
                 &nbsp;&nbsp;&nbsp; <br>
         {{post.author}} &nbsp;&nbsp;&nbsp;
         {{post.dateCreation|date:'d-m-y'}} &nbsp;
-         IDPost:{{post.id}} </strong> <br>
+         IDPost:{{post.id}} &nbsp;&nbsp;&nbsp;
+         Category:{{post.categorySelection}}</strong> <br>
         {{post.text|truncatechars:50|censor}} </p>
     {% endfor %}
 
