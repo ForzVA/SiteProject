@@ -154,7 +154,7 @@ ACCOUNT_FORMS = {'signup': 'news.forms.CommonSignupForm'}
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'Forz00'
-EMAIL_HOST_PASSWORD = 'aatgnpphzwvmmplo'
+EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_SSL = True
 
 DEFAULT_FROM_EMAIL = 'Forz00@yandex.by'
@@ -166,4 +166,7 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+LOGIN_URL = '/accounts/login'
+LOGIN_REDIRECT_URL = '/'
 

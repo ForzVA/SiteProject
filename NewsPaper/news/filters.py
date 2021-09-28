@@ -12,10 +12,3 @@ class NewsFilter(django_filters.FilterSet):
         fields = {'author': ['exact'],
                   'title': ['icontains'],
                   'categorySelection': ['exact']}
-
-
-
-
-
-
-

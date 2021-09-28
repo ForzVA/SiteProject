@@ -5,9 +5,8 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>Поступила новая статья </h2>
-    <p> Здравствуй, {{user.username}}. Новая статья в твоём любимом разделе!<br>
-        {{post.text}}
-    </p>
+    <h1>Поступила новая статья </h1>
+    <p><h2> Здравствуй, {{user.user_name}}. Новая статья в твоём любимом разделе!</h2></p>
+    <p><h2> <a href= "{% url 'post_detail' post.id %}">{{post.text}}</a> </h2> </p>
 </body>
 </html>

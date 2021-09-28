@@ -20,6 +20,7 @@
     <hr>
 
     {% for post in posts  %}
+    <div class="alert alert-warning mt-2">
         <p style="text-align: left;">
         <strong><a href="{% url 'post_detail' post.id %}">{{post.title}}</a> &nbsp;&nbsp;&nbsp; <br>
         {{post.author}} &nbsp;&nbsp;&nbsp;
@@ -27,6 +28,7 @@
          IDPost:{{post.id}} &nbsp;&nbsp;&nbsp;
          Category:{{post.categorySelection}} </strong> <br>
         {{post.text|truncatechars:50|censor}} </p>
+    </div>
     {% endfor %}
 
 

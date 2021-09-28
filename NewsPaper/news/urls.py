@@ -10,5 +10,5 @@ urlpatterns = [path('', NewsList.as_view()),
                path('<int:pk>/delete', PostDelete.as_view(), name='post_delete'),
                path('upgrade/', upgrade_me, name='upgrade'),
                path('accounts/logout/', LogoutView.as_view(template_name='flatpages/home.html'), name='logout'),
-               path('cow/', IndexView.as_view()),
+               path('', IndexView.as_view()),
             ]

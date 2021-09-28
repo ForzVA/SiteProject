@@ -2,8 +2,9 @@ from django.views.generic import ListView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
+from django.contrib.auth.models import User
 from django.shortcuts import redirect, render, reverse
-from .models import Post
+from .models import Post, Category
 from datetime import *
 from .filters import NewsFilter
 from .forms import PostForm
@@ -11,6 +12,7 @@ from django.views.generic.edit import CreateView
 from django.views import View
 from django.http import HttpResponse
 from .tasks import hello
+
 
 class NewsList(LoginRequiredMixin, ListView):
     model = Post
@@ -30,21 +32,15 @@ class NewsList(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['time_now'] = datetime.now()
         context['filter'] = self.get_filter()
-        context['value1'] = None
         context['all_posts'] = Post.objects.all()
         context['form'] = PostForm()
+        context['is_not_authors'] = not self.request.user.groups.filter(name='authors').exists()
         return context
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)  # создаём новую форму, забиваем в неё данные из POST-запроса
 
-
         return super().get(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['is_not_authors'] = not self.request.user.groups.filter(name='authors').exists()
-        return context
 
 
 class NewsDetail(DetailView):
@@ -101,14 +97,20 @@ class IndexView(View):
         hello.delay()
         return HttpResponse('hello')
 
+
 @login_required
 def upgrade_me(request):
     user = request.user
     authors_group = Group.objects.get(name='authors')
     if not request.user.groups.filter(name='authors').exists():
         authors_group.user_set.add(user)
-    return redirect('/')
+    return redirect('/posts')
 
 
+class Categories(ListView):
+    model = Post.postCategory
+    template_name = 'posts.html'
+    context_object_name = 'categorys'
+    paginate_by = 2
 
 

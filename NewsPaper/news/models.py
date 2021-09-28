@@ -8,7 +8,7 @@ ARTICLE = 'AR'
 CAT_CHOIСES = [
     (NEWS, 'News'),
     (ARTICLE, 'Article')
-    ]
+]
 
 
 class Author(models.Model):
@@ -35,14 +35,14 @@ class Category(models.Model):
     nameCategory = models.CharField(unique=True,
                                     max_length=64)
 
-    subscribers = models.ManyToManyField(User)
+    subscribers = models.ManyToManyField(User, blank=True, null=True)
 
     def __str__(self):
         return f'{self.nameCategory}'
 
 
 class Post(models.Model):
-    author = models.ForeignKey(Author, on_delete=models.CASCADE,)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, )
     categorySelection = models.CharField(choices=CAT_CHOIСES,
                                          default='NS',
                                          max_length=2,
@@ -51,11 +51,11 @@ class Post(models.Model):
     postCategory = models.ManyToManyField(Category, through='PostCategory')
     title = models.CharField(unique=True,
                              max_length=128)
-    text = models.TextField(verbose_name='News text')
+    text = models.TextField(verbose_name='Post text')
     rating = models.IntegerField(default=0)
 
     def like(self):
-        self.rating +=1
+        self.rating += 1
         self.save()
 
     def dislike(self):
@@ -94,12 +94,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.commentPost}'
-
-
-
-
-
-
-
-
-

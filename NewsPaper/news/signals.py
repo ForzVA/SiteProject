@@ -5,14 +5,18 @@ from .models import Post
 from django.core.mail import EmailMultiAlternatives
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
+from django.contrib.sites.shortcuts import get_current_site
 
-@receiver(post_save, sender=Post)
+
+@receiver(m2m_changed, sender=Post)
 def sub_mail(sender, instance, created, **kwargs):
     html_content = render_to_string('post_created.html',
-                                    {'post': Post}
-                                     )
-    msg = EmailMultiAlternatives(subject=f'{User.email}',
-                                 body=f'{User.username}',
+                                    {'post': instance}
+                                    )
+    current_site = Site.objects.get_current()
+    msg = EmailMultiAlternatives(subject=f'{instance.title}',
+                                 body=f'{instance.text}',
                                  from_email='Forz00@yandex.by',
                                  to=['vasilevskiysasha1@gmail.com']
                                  )

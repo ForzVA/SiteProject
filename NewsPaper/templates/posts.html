@@ -1,5 +1,6 @@
 {% extends 'flatpages/default.html' %}
 
+
     {% load my_filters %}
 
 
@@ -9,61 +10,60 @@
 
 
 {% block content %}
-
-    {{time_now}}
-
-
-    <h1>All news and articles:</h1>
-    <button> <a href="accounts/logout/">LogOut</a> </button>
+        <h1>All news and articles:</h1>
+        <h3>[{{ all_posts|length }}]</h3>
+        <hr>
     {% if is_not_authors %}
-        <button> <a href="upgrade/"> Become an author </a> </button>
+        <button> <a href="upgrade/" style="font-family: impact; color: #800000"> Become an author </a> </button> &nbsp;&nbsp;&nbsp;
     {% endif %}
-    <h3>[{{all_posts|length}}]</h3>
-    <strong><span style="font color: #ff00ff;">
-        <a href="search">--Post search--</a> &nbsp;&nbsp;&nbsp;
-        <a href="{% url 'post_create' %}">---ADD POST---</a> &nbsp;&nbsp;&nbsp;
-    </span></strong>
 
-    <hr>
+        <strong><span style="font color: #ff00ff;">
+            <button> <a href="search" style="font-family: impact; color: #800000">POST SEARCH</a></button> &nbsp;&nbsp;&nbsp;
+            <button><a href="{% url 'post_create' %}" style="font-family: impact; color: #800000">ADD POST</a></button> &nbsp;&nbsp;&nbsp;
+            <button> <a href="search" style="font-family: impact; color: #800000">SUBSCRIPTIONS </a></button> &nbsp;
+        </span></strong>
+
+
+        <hr>
 
     {% for post in posts  %}
 
-        <p style="text-align: left;">
-            <strong><a href="{% url 'post_detail' post.id %}">{{post.title|truncatechars:64}}</a>
-                    <a href="{% url 'post_update' post.id %}"><u>[Edit]</u></a>
-                    <a href="{% url 'post_delete' post.id %}"><u>[Delete]</u></a>
-
-
-                &nbsp;&nbsp;&nbsp; <br>
-        {{post.author}} &nbsp;&nbsp;&nbsp;
-        {{post.dateCreation|date:'d-m-y'}} &nbsp;
-         IDPost:{{post.id}} &nbsp;&nbsp;&nbsp;
-         Category:{{post.categorySelection}}</strong> <br>
-        {{post.text|truncatechars:50|censor}} </p>
+        <div class="alert alert-warning mt-2">
+            <p style="text-align: left;">
+                <strong><a href="{% url 'post_detail' post.id %}" style="color: #008000;font-family: helvetica" >{{post.title|truncatechars:64}}</a>
+                        <a href="{% url 'post_update' post.id %}" style="color:#778899"><u>[EDIT]</u></a>
+                        <a href="{% url 'post_delete' post.id %}" style="color:#778899"><u>[Delete]</u></a>
+                    &nbsp;&nbsp;&nbsp; <br>
+            {{post.author}} &nbsp;&nbsp;&nbsp;
+            {{post.dateCreation|date:'d-m-y'}} &nbsp;
+             IDPost:{{post.id}} &nbsp;&nbsp;&nbsp;
+             Category:{{post.categorySelection}}</strong> <br>
+            {{post.text|truncatechars:50|censor}} </p>
+        </div>
     {% endfor %}
 
 
     {% if is_paginated %}
 
-{% if page_obj.has_previous %}
-    <a href="?page=1">FIRST</a>
-    <a href="?page={{ page_obj.previous_page_number }}"><--</a>
-{% endif %}
-
-
-{% for num in page_obj.paginator.page_range %}
-    {%if page_obj.number == num %}
-        <a>{{num}}</a>
-    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-        <a href="?page={{num}}">{{num}}</a>
+    {% if page_obj.has_previous %}
+        <a href="?page=1">FIRST</a>
+        <a href="?page={{ page_obj.previous_page_number }}"><--</a>
     {% endif %}
-{% endfor %}
 
 
-{% if page_obj.has_next %}
-    <a href="?page={{ page_obj.next_page_number }}">--></a>
-    <a href="?page={{ page_obj.paginator.num_pages}}">LAST</a>
-{% endif%}
+    {% for num in page_obj.paginator.page_range %}
+        {%if page_obj.number == num %}
+            <a>{{num}}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <a href="?page={{num}}">{{num}}</a>
+        {% endif %}
+    {% endfor %}
+
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">--></a>
+        <a href="?page={{ page_obj.paginator.num_pages}}">LAST</a>
+    {% endif%}
 
     {%else%}
         <h2>----------</h2>
