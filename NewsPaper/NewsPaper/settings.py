@@ -9,10 +9,9 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import secrets
 from pathlib import Path
 import os
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -169,4 +168,122 @@ CELERY_RESULT_SERIALIZER = 'json'
 
 LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/'
+
+LOGGING = {'version': 1,
+           'disable_existing_loggers': False,
+           'style': '{',
+           'formatters': {
+               'debug': {
+                   'format': '%(asctime)s %(levelname)s %(message)s'
+               },
+               'warning': {
+                   'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s'
+               },
+               'error': {
+                   'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s %(exc_info)s'
+               },
+               'general_sec_log': {
+                   'format': '%(asctime)s %(levelname)s %(module)s %(message)s '
+               },
+               'mail_log': {
+                   'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s'
+               }
+           },
+           'filters': {
+               'require_debug_true': {
+                   '()': 'django.utils.log.RequireDebugTrue'
+               },
+               'require_debug_false': {
+                   '()': 'django.utils.log.RequireDebugFalse'
+               },
+           },
+           'handlers': {
+               'console_debug': {
+                   'level': 'DEBUG',
+                   'filters': ['require_debug_true'],
+                   'class': 'logging.StreamHandler',
+                   'formatter': 'debug'
+               },
+               'console_warning': {
+                   'level': 'WARNING',
+                   'filters': ['require_debug_true'],
+                   'class': 'logging.StreamHandler',
+                   'formatter': 'warning'
+               },
+               'console_error': {
+                   'level': 'ERROR',
+                   'filters': ['require_debug_true'],
+                   'class': 'logging.StreamHandler',
+                   'formatter': 'error'
+               },
+               'console_critical': {
+                   'level': 'CRITICAL',
+                   'filters': ['require_debug_true'],
+                   'class': 'logging.StreamHandler',
+                   'formatter': 'error'
+               },
+               'log_gen_info': {
+                   'level': 'INFO',
+                   'filters': ['require_debug_false'],
+                   'class': 'logging.FileHandler',
+                   'filename': 'general.log',
+                   'formatter': 'general_sec_log'
+               },
+               'log_sec_info': {
+                   'level': 'INFO',
+                   'class': 'logging.FileHandler',
+                   'filename': 'security.log',
+                   'formatter': 'general_sec_log'
+               },
+               'log_err_error': {
+                   'level': 'ERROR',
+                   'class': 'logging.FileHandler',
+                   'filename': 'errors.log',
+                   'formatter': 'error'
+               },
+               'mail_error': {
+                   'level': 'ERROR',
+                   'filters': ['require_debug_false'],
+                   'class': 'django.utils.log.AdminEmailHandler',
+                   'formatter': 'mail_log'
+               }
+
+
+           },
+           'loggers': {
+               'django': {
+                   'handlers': ['console_debug', 'console_warning', 'console_error', 'log_gen_info'],
+                   'propagate': True
+               },
+               'django.request': {
+                   'handlers': ['log_err_error', 'console_critical', 'mail_error'],
+                   'propagate': True
+               },
+               'django.server': {
+                   'handlers': ['log_err_error', 'console_critical', 'mail_error'],
+                   'propagate': True
+               },
+               'django.template': {
+                   'handlers': ['log_err_error', 'console_critical'],
+                   'propagate': True
+               },
+               'django.db_backends': {
+                   'handlers': ['log_err_error', 'console_critical'],
+                   'propagate': True
+               },
+               'django.security': {
+                   'handlers': ['log_sec_info'],
+                   'propagate': True
+               },
+
+           }
+           }
+
+
+
+
+
+
+
+
 

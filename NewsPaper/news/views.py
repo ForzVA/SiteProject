@@ -113,4 +113,23 @@ class Categories(ListView):
     context_object_name = 'categorys'
     paginate_by = 2
 
+##########Списанный кусок кода#########
+@login_required
+def subscribe(request, pk):
+    category = Category.objects.get(id=pk)
+    if category not in User.category_set.all():
+        category.subscribers.add()
+        return redirect(request.META.get('HTTP_REFER'))
+    else:
+        return redirect(request.META.get('HTTP_REFER'))
+
+
+@login_required
+def unsubscribe(request, pk):
+    category = Category.objects.get(id=pk)
+    if category not in User.category_set.all():
+        category.subscribers.remove()
+        return redirect(request.META.get('HTTP_REFER'))
+    else:
+        return redirect(request.META.get('HTTP_REFER'))
 

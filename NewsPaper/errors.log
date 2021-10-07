@@ -1,0 +1,24 @@
+2021-10-07 21:31:53,954 ERROR Internal Server Error: /posts/upgrade/ C:\Users\vasil\PythonProjects\NewsPortal\venv\lib\site-packages\django\utils\log.py (<class 'NameError'>, NameError("name 'reuest' is not defined"), <traceback object at 0x000001BC4ABDCDC0>)
+Traceback (most recent call last):
+  File "C:\Users\vasil\PythonProjects\NewsPortal\venv\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\vasil\PythonProjects\NewsPortal\venv\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\vasil\PythonProjects\NewsPortal\venv\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\vasil\PythonProjects\NewsPortal\NewsPaper\news\views.py", line 103, in upgrade_me
+    user = reuest.user
+NameError: name 'reuest' is not defined
+2021-10-07 21:31:53,957 ERROR "GET /posts/upgrade/ HTTP/1.1" 500 76574 C:\Users\vasil\PythonProjects\NewsPortal\venv\lib\site-packages\django\core\servers\basehttp.py None
+2021-10-07 21:32:38,061 ERROR Internal Server Error: /posts/upgrade/ C:\Users\vasil\PythonProjects\NewsPortal\venv\lib\site-packages\django\utils\log.py (<class 'NameError'>, NameError("name 'reuest' is not defined"), <traceback object at 0x000001BC4ABF4480>)
+Traceback (most recent call last):
+  File "C:\Users\vasil\PythonProjects\NewsPortal\venv\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\vasil\PythonProjects\NewsPortal\venv\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\vasil\PythonProjects\NewsPortal\venv\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\vasil\PythonProjects\NewsPortal\NewsPaper\news\views.py", line 103, in upgrade_me
+    user = request.user
+NameError: name 'reuest' is not defined
+2021-10-07 21:32:38,064 ERROR "GET /posts/upgrade/ HTTP/1.1" 500 76713 C:\Users\vasil\PythonProjects\NewsPortal\venv\lib\site-packages\django\core\servers\basehttp.py None

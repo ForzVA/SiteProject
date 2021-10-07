@@ -24,3 +24,10 @@ urlpatterns = [
     path('', lambda request: redirect('/home', permanent=False)),
     path('accounts/', include('allauth.urls')),
 ]
+
+
+
+
+
+
+
